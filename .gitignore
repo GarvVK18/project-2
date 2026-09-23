@@ -3,6 +3,11 @@
 build/
 **/build/
 
+# Java compiled files
+*.class
+bin/
+**/bin/
+
 # Eclipse
 .project
 .classpath

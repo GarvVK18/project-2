@@ -1,29 +1,26 @@
 package com.ecommerce.order;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.*;
+
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/orders")
 public class OrderController {
-    private final OrderRepository repository;
-    public OrderController(OrderRepository repository) { this.repository = repository; }
 
-    @GetMapping
-    public List<Order> all() { return repository.findAll(); }
+    private final OrderRepository orderRepository;
 
-    @GetMapping("/{id}")
-    public Order one(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+    public OrderController(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Order create(@RequestBody CreateOrderRequest request) {
-        return repository.save(new Order(request.customerId(), request.totalAmount()));
+    public Order createOrder(@RequestBody Order order) {
+        return orderRepository.save(order);
     }
 
-    public record CreateOrderRequest(String customerId, BigDecimal totalAmount) {}
+    @GetMapping
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
 }
