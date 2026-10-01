@@ -16,9 +16,9 @@ public class InventoryEventPublisher {
         this.objectMapper = objectMapper;
     }
 
-    public void publish(String topic, Long orderId, String status) {
+    public void publish(String topic, Long orderId, String status, Double amount) {
         try {
-            String payload = objectMapper.writeValueAsString(new InventoryResultEvent(orderId, status));
+            String payload = objectMapper.writeValueAsString(new InventoryResultEvent(orderId, status, amount));
             kafkaTemplate.send(topic, String.valueOf(orderId), payload);
         } catch (Exception ex) {
             throw new IllegalStateException("Unable to publish inventory event", ex);
