@@ -18,6 +18,8 @@ public class Order {
 
     private Double price;
 
+    private String status = "PENDING";
+
     public Order() {
     }
 
@@ -57,5 +59,13 @@ public class Order {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
