@@ -9,14 +9,18 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderRepository orderRepository;
+    private final OrderEventPublisher eventPublisher;
 
-    public OrderController(OrderRepository orderRepository) {
+    public OrderController(OrderRepository orderRepository, OrderEventPublisher eventPublisher) {
         this.orderRepository = orderRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @PostMapping
     public Order createOrder(@RequestBody Order order) {
-        return orderRepository.save(order);
+        Order saved = orderRepository.save(order);
+        eventPublisher.publish(saved);
+        return saved;
     }
 
     @GetMapping
