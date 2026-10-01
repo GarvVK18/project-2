@@ -28,13 +28,13 @@ public class OrderCreatedListener {
             InventoryItem item = repository.findBySku(event.productName()).orElse(null);
 
             if (item == null || item.getQuantity() < event.quantity()) {
-                publisher.publish("inventory.failed", event.orderId(), "INSUFFICIENT_STOCK");
+                publisher.publish("inventory.failed", event.orderId(), "INSUFFICIENT_STOCK", event.price());
                 return;
             }
 
             item.setQuantity(item.getQuantity() - event.quantity());
             repository.save(item);
-            publisher.publish("inventory.reserved", event.orderId(), "RESERVED");
+            publisher.publish("inventory.reserved", event.orderId(), "RESERVED", event.price());
         } catch (Exception ex) {
             throw new IllegalStateException("Unable to process order event", ex);
         }
