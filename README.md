@@ -25,7 +25,7 @@ Project 2 for the Java Full Stack internship.
 ## Architecture
 Client -> API Gateway -> Order / Inventory / Payment services
 
-Eureka provides service discovery and Config Server provides centralized configuration. Kafka, Saga, Resilience4j and Kubernetes are planned for Weeks 2-4.
+Eureka provides service discovery and Config Server provides centralized configuration. Kafka, Saga, Resilience4j and Kubernetes is planned for later weeks.
 
 ## Run order
 1. Config Server
@@ -34,3 +34,39 @@ Eureka provides service discovery and Config Server provides centralized configu
 4. API Gateway
 
 > Week 1 intentionally keeps the services small and focused on the foundation. Secrets and database credentials should be supplied through environment variables in local/production environments.
+
+## Week 2 scope
+- Kafka event-driven communication between Order, Inventory and Payment services
+- Saga-style order workflow: order created -> inventory reserved -> payment completed
+- Inventory failure event updates the order to CANCELLED
+- Resilience4j circuit breakers and gateway fallbacks
+- Kafka can be started locally with Docker Compose
+
+### Week 2 event flow
+```
+Order Service
+   |
+   | order.created
+   v
+Inventory Service
+   |
+   | inventory.reserved
+   v
+Payment Service
+   |
+   | payment.completed
+   v
+Order Service -> COMPLETED
+```
+
+If inventory cannot reserve the requested stock:
+```
+Order -> order.created -> Inventory -> inventory.failed -> Order -> CANCELLED
+```
+
+### Start Kafka for Week 2
+```bash
+docker compose up -d kafka
+```
+
+The services use `KAFKA_BOOTSTRAP_SERVERS` with `localhost:9092` as the local default.
