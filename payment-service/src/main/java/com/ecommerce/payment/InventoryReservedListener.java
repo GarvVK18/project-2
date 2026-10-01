@@ -27,7 +27,7 @@ public class InventoryReservedListener {
     public void handle(String payload) {
         try {
             InventoryReservedEvent event = objectMapper.readValue(payload, InventoryReservedEvent.class);
-            Payment payment = repository.save(new Payment(event.orderId(), BigDecimal.ZERO));
+            Payment payment = repository.save(new Payment(event.orderId(), BigDecimal.valueOf(event.amount())));
             payment.setStatus("COMPLETED");
             payment = repository.save(payment);
             publisher.publish(payment);
