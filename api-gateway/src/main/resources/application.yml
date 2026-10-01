@@ -14,20 +14,6 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
-
-server:
-  port: 8080
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
       routes:
         - id: order-service
           uri: lb://order-service
@@ -56,6 +42,20 @@ management:
               args:
                 name: paymentServiceCircuitBreaker
                 fallbackUri: forward:/fallback
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
 
 resilience4j:
   circuitbreaker:
