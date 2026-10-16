@@ -37,7 +37,7 @@ kubectl -n ecommerce rollout status deployment/api-gateway
 Before applying in a real cluster:
 1. Build and publish images to a registry, then change image names in `k8s/platform.yaml` to match.
 2. Replace the development database password. Never commit production credentials.
-3. The development PostgreSQL manifest creates only one database; create the `inventory` and `payments` databases or use separate database instances before starting those services.
+3. The development PostgreSQL manifest initializes `orders`, `inventory`, and `payments` databases only on the first startup of a fresh database volume.
 4. The gateway expects an OIDC issuer at `JWT_ISSUER_URI`; deploy the IAM server or configure the correct issuer.
 5. Confirm Config Server's repository-backed config uses Kubernetes service DNS names, not `localhost`.
 6. Kafka in this manifest is a single-node development broker, not a production Kafka deployment.
